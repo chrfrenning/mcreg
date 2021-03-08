@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { UserRegistrationFormComponent } from './user-registration-form/user-registration-form.component';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.less']
 })
 export class AppComponent {
-  title = 'mcreg';
+  title = 'Minecraft Registration Form';
 }
