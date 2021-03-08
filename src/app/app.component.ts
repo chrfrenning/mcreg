@@ -7,5 +7,5 @@ import { UserRegistrationFormComponent } from './user-registration-form/user-reg
   styleUrls: ['./app.component.less']
 })
 export class AppComponent {
-  title = 'Minecraft Registration Form';
+  title = 'Minecraft Registration App';
 }
