@@ -1,13 +1,33 @@
-<h3>Registration</h3>
-<p>To participate in the Minecraft event, we need to know your Minecraft alias.</p>
-<p><span class="uk-label">Hey</span> Your family members are also welcome, so feel free to register multiple aliases!</p>
-<p>After registration, open Minecraft Java Edition, hit Multiplayer and connect to microsoft.chph.io</p>
+<section class="mat-typography">
+    
+  <h1>Registration</h1>
+  <p>To participate in the Minecraft event, we need to know your Minecraft alias.</p>
+  <p><span class="uk-label">Hey</span> Your family members are also welcome, so feel free to register multiple aliases!</p>
+  <p>After registration, open Minecraft Java Edition, hit Multiplayer and connect to 52.169.88.111</p>
+  
+  
+  <form class="example-form">
+      <p>
+          <mat-form-field class="example-full-width">
+              <mat-label>Minecraft username</mat-label>
+              <input matInput [formControl]="name" placeholder="Ex. MetalPigeon3337" value="">
+          </mat-form-field>
+      </p>
+      
+      <p>
+          <mat-form-field class="example-full-width">
+              <mat-label>Microsoft alias</mat-label>
+              <input matInput [formControl]="alias" placeholder="Ex. chfrenni" value="">
+          </mat-form-field>
+      </p>
+  
+      <p>
+          <mat-checkbox [formControl]="termsAccepted">Accept our data storage terms, fair-play and code of conduct</mat-checkbox>
+      </p>
+  
+      <button mat-raised-button color="primary">Register now</button>
+  </form>
 
-<p><span>Name</span>
-<input type="text" id="mcalias" class="uk-input"/></p>
+  <p><span *ngIf="name.value">Your name is {{name.value}}.</span><span *ngIf="termsAccepted.dirty && !termsAccepted.value">You must accept the terms and conditions to register.</span></p>
 
-<p><span>Microsoft Alias</span>
-<input type="text" id="msalias" class="uk-input"/></p>
-
-<p><input id="acceptTerms" type="checkbox"><label for="acceptTerms">Accept terms, fair-play and nice language</label></p>
-<button id="register" class="uk-button uk-button-default uk-button-primary">Register</button>
+  </section>

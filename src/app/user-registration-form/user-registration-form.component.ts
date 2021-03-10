@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Validators, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-user-registration-form',
@@ -8,7 +9,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UserRegistrationFormComponent implements OnInit {
 
-  name : '';
+  name = new FormControl('', [Validators.required]); //, [new MinecraftAliasValidator().validate]);
+  alias = new FormControl('', [Validators.required]);
+  termsAccepted = new FormControl('');
 
   constructor() { }
 
@@ -16,3 +19,4 @@ export class UserRegistrationFormComponent implements OnInit {
   }
 
 }
+
