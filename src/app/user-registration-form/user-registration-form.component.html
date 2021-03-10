@@ -1,33 +1,67 @@
 <section class="mat-typography">
     
-  <h1>Registration</h1>
-  <p>To participate in the Minecraft event, we need to know your Minecraft alias.</p>
-  <p><span class="uk-label">Hey</span> Your family members are also welcome, so feel free to register multiple aliases!</p>
-  <p>After registration, open Minecraft Java Edition, hit Multiplayer and connect to 52.169.88.111</p>
-  
-  
-  <form class="example-form">
-      <p>
-          <mat-form-field class="example-full-width">
-              <mat-label>Minecraft username</mat-label>
-              <input matInput [formControl]="name" placeholder="Ex. MetalPigeon3337" value="">
-          </mat-form-field>
-      </p>
-      
-      <p>
-          <mat-form-field class="example-full-width">
-              <mat-label>Microsoft alias</mat-label>
-              <input matInput [formControl]="alias" placeholder="Ex. chfrenni" value="">
-          </mat-form-field>
-      </p>
-  
-      <p>
-          <mat-checkbox [formControl]="termsAccepted">Accept our data storage terms, fair-play and code of conduct</mat-checkbox>
-      </p>
-  
-      <button mat-raised-button color="primary">Register now</button>
-  </form>
+  <div id="registrationForm" *ngIf="!successfullyRegistered">
 
-  <p><span *ngIf="name.value">Your name is {{name.value}}.</span><span *ngIf="termsAccepted.dirty && !termsAccepted.value">You must accept the terms and conditions to register.</span></p>
+    <h1>Registration</h1>
+    <p>Awesome to see you here! We're putting up a huge online party for all Microsofties in Norway!</p>
+    <p>Register below to participate in our Minecraft event on <strong>Day, Date</strong>.</p>
+    
+    <div class="breaker"></div>
+  
+  
+    <form [formGroup]="form" class="example-form">
+        <p>
+            <mat-form-field class="example-full-width">
+                <mat-label>Minecraft username</mat-label>
+                <input matInput formControlName="name" placeholder="Ex. MetalPigeon3337" value="">
+            </mat-form-field>
+        </p>
+        
+        <p>
+            <mat-form-field class="example-full-width">
+                <mat-label>Microsoft alias</mat-label>
+                <input matInput formControlName="alias" placeholder="Ex. chfrenni" value="">
+            </mat-form-field>
+        </p>
+    
+        <p>
+            <mat-checkbox formControlName="termsAccepted">Accept our <a href="#" (click)="toggleTerms()">data storage terms, fair-play rules, and code of conduct.</a></mat-checkbox>
+        </p>
+    
+        <div class="breaker"></div>
+
+        <button id="submit" mat-raised-button color="primary" [disabled]="form.invalid" (click)="submit()">Register now</button>
+    </form>
+
+    <div class="breaker"></div>
+
+    <div id="terms" *ngIf="showTerms">
+      <h3>Data Storage Terms</h3>
+      <p>We will store your Minecraft profile name and Microsoft alias on our Minecraft server for the duration of the event.</p>
+
+      <h3>Fair Play Rules</h3>
+      <p>Though shalt not switch thyselves into creative mode to obtain stuff.</p>
+
+      <h3>Code of Conduct</h3>
+      <p>Be nice to everyone and don't eat your friends.</p>
+    </div>
+
+  </div> <!-- registrationform -->
+
+
+  <div id="doneMessage" *ngIf="successfullyRegistered">
+    <h2>You're in!</h2>
+    <p>Now it is time to play! Open Minecraft Java Edition, hit Multiplayer and connect to 52.169.88.111.</p>
+    
+    <div class="breaker"></div>
+
+    <h2>Your family is welcome too!</h2>
+    <p>Your entire family, or that special friend, are welcome too! Hit the button below to register another player.</p>
+
+    <button id="reset" mat-raised-button (click)="reset()">Register another player</button>
+
+  </div>
+
+
 
   </section>
