@@ -10,27 +10,38 @@
   
   
     <form [formGroup]="form" class="example-form">
-        <p>
-            <mat-form-field class="example-full-width">
-                <mat-label>Minecraft username</mat-label>
+        
+      <div class="float-container">
+        <div class="float-child">
+            <mat-form-field class="example-full-width" style="width: 250px">
+                <mat-label>Minecraft player name</mat-label>
                 <input matInput formControlName="name" placeholder="Ex. MetalPigeon3337" value="">
             </mat-form-field>
-        </p>
+          </div>
+        </div>
         
-        <p>
-            <mat-form-field class="example-full-width">
+        <div class="float-container">
+          <div class="float-child">
+            <mat-form-field class="example-full-width" style="width: 250px">
                 <mat-label>Microsoft alias</mat-label>
                 <input matInput formControlName="alias" placeholder="Ex. chfrenni" value="">
             </mat-form-field>
-        </p>
+          </div>
+        </div>
+
+        <div class="breaker"></div>
     
-        <p>
-            <mat-checkbox formControlName="termsAccepted">Accept our <a href="#" (click)="toggleTerms()">data storage terms, fair-play rules, and code of conduct.</a></mat-checkbox>
-        </p>
+        <mat-checkbox formControlName="termsAccepted">Accept our <a href="#" (click)="toggleTerms()">data storage terms, fair-play rules, and code of conduct.</a></mat-checkbox>
     
         <div class="breaker"></div>
 
-        <button id="submit" mat-raised-button color="primary" [disabled]="form.invalid" (click)="submit()">Register now</button>
+        <button id="submit" mat-raised-button color="primary" [disabled]="form.invalid" (click)="submit()" style="width: 250px">
+          <mat-spinner *ngIf="!state_default" diameter="16" color="#eeeeee" style="display: inline-block; margin-right: 3px;"></mat-spinner>
+          <span *ngIf="state_default">Register now...</span>
+          <span *ngIf="state_validating">Validating player name...</span>
+          <span *ngIf="state_submitting">Adding to server...</span>
+        </button>
+
     </form>
 
     <div class="breaker"></div>
