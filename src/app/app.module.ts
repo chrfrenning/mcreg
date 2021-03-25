@@ -27,6 +27,7 @@ import { UserRegistrationFormComponent } from './user-registration-form/user-reg
 import { MainNavComponent } from './main-nav/main-nav.component';
 import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
 import { RootPageComponent } from './root-page/root-page.component';
+import { PlayerNameValidationService } from './player-name-validation.service';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { RootPageComponent } from './root-page/root-page.component';
     UserRegistrationFormComponent,
     MainNavComponent,
     UnauthorizedComponent,
-    RootPageComponent
+    RootPageComponent,
+    PlayerNameValidationService
   ],
   imports: [
     BrowserModule,

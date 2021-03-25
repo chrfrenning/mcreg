@@ -15,8 +15,17 @@
         <div class="float-child">
             <mat-form-field class="example-full-width" style="width: 250px">
                 <mat-label>Minecraft player name</mat-label>
-                <input matInput formControlName="name" placeholder="Ex. MetalPigeon3337" value="">
+                <input matInput formControlName="name" placeholder="Ex. MetalPigeon3337" value="" playerNameValidator required>
+                <p></p>
+                
             </mat-form-field>
+          </div>
+
+          <div *ngIf="displayPlayerNameWarning">
+            <div style="color: brown">
+              Check your player name, including case sensitivity, it seems to be invalid...
+              <p></p>
+            </div>
           </div>
         </div>
         
@@ -24,18 +33,18 @@
           <div class="float-child">
             <mat-form-field class="example-full-width" style="width: 250px">
                 <mat-label>Microsoft alias</mat-label>
-                <input matInput formControlName="alias" placeholder="Ex. chfrenni" value="">
+                <input matInput formControlName="alias" placeholder="Ex. chfrenni" value="" required>
             </mat-form-field>
           </div>
         </div>
 
         <div class="breaker"></div>
     
-        <mat-checkbox formControlName="termsAccepted">Accept our <a href="#" (click)="toggleTerms()">data storage terms, fair-play rules, and code of conduct.</a></mat-checkbox>
+        <mat-checkbox formControlName="termsAccepted" required>Accept our <a href="#" (click)="toggleTerms()">data storage terms, fair-play rules, and code of conduct.</a></mat-checkbox>
     
         <div class="breaker"></div>
 
-        <button id="submit" mat-raised-button color="primary" [disabled]="form.invalid" (click)="submit()" style="width: 250px">
+        <button id="submit" mat-raised-button color="primary" [disabled]="!(form.valid && readyToSubmit)" (click)="submit()" style="width: 250px">
           <mat-spinner *ngIf="!state_default" diameter="16" color="#eeeeee" style="display: inline-block; margin-right: 3px;"></mat-spinner>
           <span *ngIf="state_default">Register now...</span>
           <span *ngIf="state_validating">Validating player name...</span>

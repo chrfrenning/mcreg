@@ -1,6 +1,10 @@
+import { PlayerNameValidationService } from './../player-name-validation.service';
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { Validators, FormControl, FormGroup } from '@angular/forms';
+import { AbstractControl, ValidationErrors, Validators, FormControl, FormGroup } from '@angular/forms';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
+import { Observable, pipe, of } from 'rxjs';
+import { map, debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-user-registration-form',
@@ -11,44 +15,48 @@ import { OidcSecurityService } from 'angular-auth-oidc-client';
 export class UserRegistrationFormComponent implements OnInit {
 
   form = new FormGroup( { 
-    name: new FormControl('', [Validators.required]), //, [new MinecraftAliasValidator().validate]);
-    alias: new FormControl('', [Validators.required]),
-    termsAccepted: new FormControl('', [Validators.required])
+    name: new FormControl(''),
+    alias: new FormControl(''),
+    termsAccepted: new FormControl('')
   });
 
   showTerms = false;
   successfullyRegistered = false;
+  readyToSubmit = false;
+  displayPlayerNameWarning = false;
 
   state_default = true; // state, when user first enters
   state_validating = false; // state, switch to progress for playerName validation
   state_submitting = false; // state, switch to progress for api registration
 
-  constructor(private securityService : OidcSecurityService) { }
+  constructor(private securityService : OidcSecurityService, private pnv : PlayerNameValidationService) { }
 
   ngOnInit(): void {
     this.securityService.userData$.subscribe( (data) => { 
       console.log(data.upn); 
       this.form.controls['alias'].setValue(data.upn);
     });
-  }
 
-  async validate() {
-    const response = await fetch(`https://nji8ggmq.azurewebsites.net/api/MinecraftValidateUsername?playerName=${this.form.controls['name'].value}`);
-    const content = await response.json();
-    console.log("validation webservice: ", content);
-    
-    if ( content == "true" )
-      return true;
-    else
-      return false;
+    this.form.controls['name'].valueChanges.subscribe( value => {
+      console.log("Player name changed to", this.form.controls['name'].value);
+      this.readyToSubmit = false;
+      
+      this.pnv.validatePlayerName( this.form.controls['name'].value ).then( value =>
+        { 
+          this.readyToSubmit = value;
+          this.displayPlayerNameWarning = !this.readyToSubmit;
+        }
+      )
+    });
   }
 
   async submit() {
     // first, validate player name
     this.state_default = false;
-    this.state_validating = true;
-    this.validate();
-    this.state_validating = false;
+
+    // this.state_validating = true;
+    // this.validate();
+    // this.state_validating = false;
 
     this.state_submitting = true;
     const token = this.securityService.getToken();
@@ -68,6 +76,10 @@ export class UserRegistrationFormComponent implements OnInit {
     this.successfullyRegistered = true;
   }
 
+  onPlayerNameChange(event: any) {
+    
+  }
+
   toggleTerms() {
     this.showTerms = !this.showTerms;
   }
@@ -76,6 +88,8 @@ export class UserRegistrationFormComponent implements OnInit {
     this.form.controls['name'].setValue("");
     this.showTerms = this.successfullyRegistered = false;
   }
+
+  
 
 }
 
