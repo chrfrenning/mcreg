@@ -4,7 +4,7 @@
 
     <h1>Registration</h1>
     <p>Awesome to see you here! We're putting up a huge online party for all Microsofties in Norway!</p>
-    <p>Register below to participate in our Minecraft event on <strong>Day, Date</strong>.</p>
+    <p>Register below to participate in our Minecraft event starting on <strong>Thu, May 20.</strong>.</p>
     
     <div class="breaker"></div>
   
@@ -33,14 +33,14 @@
           <div class="float-child">
             <mat-form-field class="example-full-width" style="width: 250px">
                 <mat-label>Microsoft alias</mat-label>
-                <input matInput formControlName="alias" placeholder="Ex. chfrenni" value="" required>
+                <input matInput formControlName="alias" placeholder="Ex. satyan" value="" required>
             </mat-form-field>
           </div>
         </div>
 
         <div class="breaker"></div>
     
-        <mat-checkbox formControlName="termsAccepted" required>Accept our <a href="#" (click)="toggleTerms()">data storage terms, fair-play rules, and code of conduct.</a></mat-checkbox>
+        <mat-checkbox formControlName="termsAccepted" required>I have familiarized myself with the player code of conduct (see below).</mat-checkbox>
     
         <div class="breaker"></div>
 
@@ -55,15 +55,24 @@
 
     <div class="breaker"></div>
 
-    <div id="terms" *ngIf="showTerms">
+    <div id="terms" *ngIf="showTerms||!showTerms">
+      <h3>Players' Code of Conduct</h3>
+
+      <ol>
+        <li>The server is not generally restricted, but this means that you need to ensure you aren’t breaking anyone else’s structure when doing your own demolition or building work. Look around and make sure no one else has claimed the area before building. Before building yourself, you should claim an area with a fence or something similar, and register it for the build competition (if applicable) or place a sign saying who has claimed it.</li>
+        <li>Don’t claim too large of an area. The world is big, so don’t feel bad about claiming as big of an area as is reasonable, but you can’t claim half the map. Use common sense. </li>
+        <li>Make sure your claimed plot is obvious. If you are claiming below ground, make that obvious as well. </li>
+        <li>The minigames are not restricted or otherwise judged. Players are expected to coordinate themselves when playing minigames. Don’t disrupt people who are playing, but also take turns and share the arenas. </li>
+        <li>The server is open to both Microsofties and their families, including kids. Watch your language, and keep in mind that kids will see your messages and game chat. </li>
+        <li>Don’t use hacks or other exploits that negatively affect the server or other people’s game play. Don’t spam commands. </li>
+        <li>Feel free to create complex machines using redstone or other in game mechanisms, but do be aware that if the contraption is causing server wide lag, it may be removed or disabled. Do not create unrestricted redstone fliers or other devices that can’t be contained. </li>
+        <li>Other than in the PVP arena, PVP is not allowed. Do not attempt to indirectly circumvent this goal.  </li>
+        <li>Use common courtesy when playing. We’re here to have fun! </li>
+      </ol>
+
       <h3>Data Storage Terms</h3>
-      <p>We will store your Minecraft profile name and Microsoft alias on our Minecraft server for the duration of the event.</p>
+      <p>We will store your Minecraft profile name(s) and Microsoft alias on our Minecraft server for the duration of the event.</p>   
 
-      <h3>Fair Play Rules</h3>
-      <p>Though shalt not switch thyselves into creative mode to obtain stuff.</p>
-
-      <h3>Code of Conduct</h3>
-      <p>Be nice to everyone and don't eat your friends.</p>
     </div>
 
   </div> <!-- registrationform -->
@@ -71,7 +80,13 @@
 
   <div id="doneMessage" *ngIf="successfullyRegistered">
     <h2>You're in!</h2>
-    <p>Now it is time to play! Open Minecraft Java Edition, hit Multiplayer and connect to 52.169.88.111.</p>
+      
+    <p>Starting Thu, May 20th at 10:00 CET, you can access the server and lobby areas.</p>
+    
+    <p>All worlds will open during our opening
+  ceremony at 18:00 (see your calendar for invite).</p>
+
+      <p>Open Minecraft Java Edition, hit Multiplayer and connect Minecraft to minecraft-event.microsoft.no.</p>
     
     <div class="breaker"></div>
 
