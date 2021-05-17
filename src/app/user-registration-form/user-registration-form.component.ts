@@ -2,7 +2,6 @@ import { PlayerNameValidationService } from './../player-name-validation.service
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, ValidationErrors, Validators, FormControl, FormGroup } from '@angular/forms';
-import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { Observable, pipe, of } from 'rxjs';
 import { map, debounceTime } from 'rxjs/operators';
 
@@ -29,13 +28,14 @@ export class UserRegistrationFormComponent implements OnInit {
   state_validating = false; // state, switch to progress for playerName validation
   state_submitting = false; // state, switch to progress for api registration
 
-  constructor(private securityService : OidcSecurityService, private pnv : PlayerNameValidationService) { }
+  constructor(private pnv : PlayerNameValidationService) { }
 
   ngOnInit(): void {
-    this.securityService.userData$.subscribe( (data) => { 
-      console.log(data.upn); 
-      this.form.controls['alias'].setValue(data.upn);
-    });
+    // TODO: We must retrieve email address/alias from authentication provider
+    // this.securityService.userData$.subscribe( (data) => { 
+    //   console.log(data.upn); 
+    //   this.form.controls['alias'].setValue(data.upn);
+    // });
 
     this.form.controls['name'].valueChanges.subscribe( value => {
       console.log("Player name changed to", this.form.controls['name'].value);
@@ -59,7 +59,7 @@ export class UserRegistrationFormComponent implements OnInit {
     // this.state_validating = false;
 
     this.state_submitting = true;
-    const token = this.securityService.getToken();
+    const token = null; // TODO: Get Beater token from authentication provider, was: this.securityService.getToken();
     // missing auth, will fail
     var url = `https://vyr1dcgqc.azurewebsites.net/api/WhitelistPlayer?playerName=${this.form.controls['name'].value}&alias=${this.form.controls['alias'].value}`;
     const response = await fetch(url, {

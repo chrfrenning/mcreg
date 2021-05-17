@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { Router } from '@angular/router';
 
 @Component({
@@ -11,16 +10,14 @@ export class MainNavComponent {
 
   isAuthenticated = false;
 
-  constructor(public oidcSecurityService: OidcSecurityService, private router : Router) {}
+  constructor(private router : Router) {}
 
   ngOnInit() {
-    this.oidcSecurityService.isAuthenticated$.subscribe( auth => {
-      this.isAuthenticated = auth;
-    });
+    
   }
 
   logout() {
-    this.oidcSecurityService.logoff();
+    
   }
 
   gotoRegistration() {
