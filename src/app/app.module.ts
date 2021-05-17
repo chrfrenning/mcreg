@@ -24,9 +24,58 @@ import { MainNavComponent } from './main-nav/main-nav.component';
 import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
 import { RootPageComponent } from './root-page/root-page.component';
 import { PlayerNameValidationService } from './player-name-validation.service';
-import { MsalModule } from '@azure/msal-angular';
 
-const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigator.userAgent.indexOf('Trident/') > -1;
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { IPublicClientApplication, PublicClientApplication, InteractionType, BrowserCacheLocation, LogLevel } from '@azure/msal-browser';
+import { MsalGuard, MsalInterceptor, MsalBroadcastService, MsalInterceptorConfiguration, MsalModule, MsalService, MSAL_GUARD_CONFIG, MSAL_INSTANCE, MSAL_INTERCEPTOR_CONFIG, MsalGuardConfiguration, MsalRedirectComponent } from '@azure/msal-angular';
+
+const isIE = window.navigator.userAgent.indexOf("MSIE ") > -1 || window.navigator.userAgent.indexOf("Trident/") > -1; // Remove this line to use Angular Universal
+
+export function loggerCallback(logLevel: LogLevel, message: string) {
+  console.log(message);
+}
+
+export function MSALInstanceFactory(): IPublicClientApplication {
+  return new PublicClientApplication({
+    auth: {
+      clientId: '6a06efcf-e31e-4fc1-96a7-ecd070467c49',
+      authority: 'https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47', // Prod environment. Uncomment to use.
+      redirectUri: '/',
+      postLogoutRedirectUri: '/'
+    },
+    cache: {
+      cacheLocation: BrowserCacheLocation.LocalStorage,
+      storeAuthStateInCookie: isIE, // set to true for IE 11. Remove this line to use Angular Universal
+    },
+    system: {
+      loggerOptions: {
+        loggerCallback,
+        logLevel: LogLevel.Info,
+        piiLoggingEnabled: false
+      }
+    }
+  });
+}
+
+export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
+  const protectedResourceMap = new Map<string, Array<string>>();
+  protectedResourceMap.set('https://vyr1dcgqc.azurewebsites.net/api/', ['api://6a06efcf-e31e-4fc1-96a7-ecd070467c49/api']); // Prod environment. Uncomment to use.
+
+  return {
+    interactionType: InteractionType.Redirect,
+    protectedResourceMap
+  };
+}
+
+export function MSALGuardConfigFactory(): MsalGuardConfiguration {
+  return { 
+    interactionType: InteractionType.Redirect,
+    authRequest: {
+      scopes: ['openid', 'profile', 'email', 'api://6a06efcf-e31e-4fc1-96a7-ecd070467c49/api']
+    },
+    loginFailedRoute: '/unauthorized'
+  };
+}
 
 @NgModule({
   declarations: [
@@ -55,44 +104,35 @@ const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigato
     MatCheckboxModule,
     MatProgressSpinnerModule,
     RouterModule.forRoot([
-      {path: '', component: RootPageComponent},
-      {path: 'unauthorized', component: UnauthorizedComponent},
-      {path: 'register', component: UserRegistrationFormComponent} // TODO: Enable Guard: was: , canActivate: [AutoLoginGuard]}
+      {path: '', component: RootPageComponent, canActivate: [MsalGuard]},
+      {path: 'register', component: UserRegistrationFormComponent, canActivate: [MsalGuard]},
+      {path: 'unauthorized', component: UnauthorizedComponent}
     ]),
-    // MsalModule.forRoot(
-    //   {
-    //     auth: {
-    //       clientId: '6a06efcf-e31e-4fc1-96a7-ecd070467c49',
-    //       authority: 'https://login.microsoftonline.com',
-    //       redirectUri: 'http://localhost:4200/register'
-    //     },
-    //     cache: {
-    //       cacheLocation: 'localStorage',
-    //       storeAuthStateInCookie: isIE, // Set to true for Internet Explorer 11
-    //     },
-    //   },
-
-    //   {
-    //     popUp: !isIE,
-    //     consentScopes: [
-    //       'user.read',
-    //       'openid',
-    //       'profile',
-    //     ],
-    //     unprotectedResources: [],
-    //     protectedResourceMap: [
-    //       ['https://graph.microsoft.com/v1.0/me', ['user.read']]
-    //     ],
-    //     extraQueryParameters: {}
-    //   },
-
-    //   null
-    // )
+    MsalModule
   ],
   providers: [
-    
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: MsalInterceptor,
+      multi: true
+    },
+    {
+      provide: MSAL_INSTANCE,
+      useFactory: MSALInstanceFactory
+    },
+    {
+      provide: MSAL_GUARD_CONFIG,
+      useFactory: MSALGuardConfigFactory
+    },
+    {
+      provide: MSAL_INTERCEPTOR_CONFIG,
+      useFactory: MSALInterceptorConfigFactory
+    },
+    MsalService,
+    MsalGuard,
+    MsalBroadcastService
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent, MsalRedirectComponent]
 })
 export class AppModule { }
 

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { MsalService } from '@azure/msal-angular';
 
 @Component({
   selector: 'app-main-nav',
@@ -10,14 +11,14 @@ export class MainNavComponent {
 
   isAuthenticated = false;
 
-  constructor(private router : Router) {}
+  constructor(private router : Router, private authService: MsalService) {}
 
   ngOnInit() {
     
   }
 
   logout() {
-    
+    this.authService.logoutRedirect();
   }
 
   gotoRegistration() {

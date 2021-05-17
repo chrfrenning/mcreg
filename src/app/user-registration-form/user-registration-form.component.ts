@@ -28,7 +28,7 @@ export class UserRegistrationFormComponent implements OnInit {
   state_validating = false; // state, switch to progress for playerName validation
   state_submitting = false; // state, switch to progress for api registration
 
-  constructor(private pnv : PlayerNameValidationService) { }
+  constructor(private pnv : PlayerNameValidationService, private http: HttpClient) { }
 
   ngOnInit(): void {
     // TODO: We must retrieve email address/alias from authentication provider
@@ -62,18 +62,31 @@ export class UserRegistrationFormComponent implements OnInit {
     const token = null; // TODO: Get Beater token from authentication provider, was: this.securityService.getToken();
     // missing auth, will fail
     var url = `https://vyr1dcgqc.azurewebsites.net/api/WhitelistPlayer?playerName=${this.form.controls['name'].value}&alias=${this.form.controls['alias'].value}`;
-    const response = await fetch(url, {
-      headers : {
-        Authorization: 'Bearer ' + token
-      }
-    });
-    const content = await response.text;
-     console.log(response.text);
-    // this.successfullyRegistered = true;
-    this.state_submitting = false;
-    this.state_default = true;
+    
+    this.http.get( url )
+    .subscribe( result => {
+      console.log(result);
+    
+      this.state_submitting = false;
+      this.state_default = true;
 
-    this.successfullyRegistered = true;
+      this.successfullyRegistered = true;
+    })
+    // const response = await fetch(url
+    //   // ,{
+    //   // headers : {
+    //   //   Authorization: 'Bearer ' + token
+    //   // }
+    //   // }
+    // );
+    // const content = await response.text;
+    //  console.log(response.text);
+    // this.successfullyRegistered = true;
+    
+    // this.state_submitting = false;
+    // this.state_default = true;
+
+    // this.successfullyRegistered = true;
   }
 
   onPlayerNameChange(event: any) {
