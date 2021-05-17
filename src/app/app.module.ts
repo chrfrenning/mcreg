@@ -24,7 +24,7 @@ import { MainNavComponent } from './main-nav/main-nav.component';
 import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
 import { RootPageComponent } from './root-page/root-page.component';
 import { PlayerNameValidationService } from './player-name-validation.service';
-//import { MsalModule } from '@azure/msal-angular';
+import { MsalModule } from '@azure/msal-angular';
 
 const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigator.userAgent.indexOf('Trident/') > -1;
 
@@ -59,29 +59,35 @@ const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigato
       {path: 'unauthorized', component: UnauthorizedComponent},
       {path: 'register', component: UserRegistrationFormComponent} // TODO: Enable Guard: was: , canActivate: [AutoLoginGuard]}
     ]),
-    // MsalModule.forRoot({
-    //   auth: {
-    //     clientId: 'Enter_the_Application_Id_here', // This is your client ID
-    //     authority: 'Enter_the_Cloud_Instance_Id_Here'/'Enter_the_Tenant_Info_Here', // This is your tenant ID
-    //     redirectUri: 'Enter_the_Redirect_Uri_Here'// This is your redirect URI
+    // MsalModule.forRoot(
+    //   {
+    //     auth: {
+    //       clientId: '6a06efcf-e31e-4fc1-96a7-ecd070467c49',
+    //       authority: 'https://login.microsoftonline.com',
+    //       redirectUri: 'http://localhost:4200/register'
+    //     },
+    //     cache: {
+    //       cacheLocation: 'localStorage',
+    //       storeAuthStateInCookie: isIE, // Set to true for Internet Explorer 11
+    //     },
     //   },
-    //   cache: {
-    //     cacheLocation: 'localStorage',
-    //     storeAuthStateInCookie: isIE, // Set to true for Internet Explorer 11
+
+    //   {
+    //     popUp: !isIE,
+    //     consentScopes: [
+    //       'user.read',
+    //       'openid',
+    //       'profile',
+    //     ],
+    //     unprotectedResources: [],
+    //     protectedResourceMap: [
+    //       ['https://graph.microsoft.com/v1.0/me', ['user.read']]
+    //     ],
+    //     extraQueryParameters: {}
     //   },
-    // }, {
-    //   popUp: !isIE,
-    //   consentScopes: [
-    //     'user.read',
-    //     'openid',
-    //     'profile',
-    //   ],
-    //   unprotectedResources: [],
-    //   protectedResourceMap: [
-    //     ['https://graph.microsoft.com/v1.0/me', ['user.read']]
-    //   ],
-    //   extraQueryParameters: {}
-    // })
+
+    //   null
+    // )
   ],
   providers: [
     

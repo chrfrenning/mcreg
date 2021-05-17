@@ -2,7 +2,9 @@
 
 <div class="contentPane">
   
-  <router-outlet *ngIf="!isAuthenticated"></router-outlet>
-  <app-user-registration-form *ngIf="isAuthenticated"></app-user-registration-form>
+  <router-outlet></router-outlet>
+  
+  <!-- <router-outlet *ngIf="!isAuthenticated"></router-outlet> -->
+  <!-- <app-user-registration-form *ngIf="isAuthenticated"></app-user-registration-form> -->
 
 </div>
