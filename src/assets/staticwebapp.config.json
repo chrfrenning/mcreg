@@ -1,0 +1,22 @@
+{
+  "routes": [
+    {
+      "route": "/unauthorized",
+      "rewrite": "/index.html"
+    },
+    {
+      "route": "/register",
+      "rewrite": "/index.html"
+    }
+  ],
+  "navigationFallback": {
+    "rewrite": "index.html",
+    "exclude": ["/images/*.{png,jpg,gif}", "/css/*"]
+  },
+  "responseOverrides": {
+  },
+  "globalHeaders": {
+  },
+  "mimeTypes": {
+  }
+}
